@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .topbar {
+      width: 200px;
+      transition: width 0.3s ease;
+    }
+    .topbar.collapsed {
+      width: 50px;
+    }
+    .menu-option {
+      transition: margin-left 0.3s ease;
+    }
+    .topbar.collapsed .menu-option {
+      margin-left: -150px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 h-screen flex">
+  <!-- Topbar -->
+  <nav class="bg-blue-500 text-white py-4 topbar h-full">
+    <div class="container mx-auto flex flex-col justify-between h-full">
+      <div>
+        <div class="ml-2">
+          <a href="#" class="text-xl font-bold menu-option" onclick="showContent('')">TopBar Actions</a>
+        </div>
+        <div class="mt-6">
+            <ul>
+                <li><a href="#" class="block py-2 ml-2 menu-option hover:scale-100 transition-transform" onclick="showContent('bienvenida')">Bienvenida</a></li>
+                <li><a href="#" class="block py-2 ml-2 menu-option hover:scale-100 transition-transform" onclick="showContent('usuarios')">Usuarios</a></li>
+                <li><a href="#" class="block py-2 ml-2 menu-option hover:scale-100 transition-transform" onclick="showContent('dashboard')">Dashboard</a></li>
+                <li><a href="#" class="block py-2 ml-2 menu-option hover:scale-100 transition-transform" onclick="showContent('mantenimiento')">Mantenimiento user</a></li>
+              </ul>
+              
+        </div>
+      </div>
+      <button id="toggleBtn" class="bg-white- text-black px-3 py-2 rounded-full shadow-md">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+          <path fill="none" d="M0 0h24v24H0z"/>
+          <path d="M4 9h16v2H4zm0 4h16v2H4z"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Contenido -->
+  <div class="container justify-center text-center" id="content">
+    <div class="px-4 py-8">
+      
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('toggleBtn').addEventListener('click', function() {
+      document.querySelector('.topbar').classList.toggle('collapsed');
+    });
+
+    function showContent(option) {
+        var contentDiv = document.getElementById('content');
+        var url = '';
+
+        switch (option) {
+            case 'bienvenida':
+                url = "{% url 'bienvenida' %}";
+                break;
+            case 'usuarios':
+                url = "{% url 'usuarios' %}";
+                break;
+            case 'dashboard':
+                url = "{% url 'dashboard' %}";
+                break;
+            case 'mantenimiento':
+                url = "{% url 'mantenimiento' %}";
+                break;
+            default:
+                break;
+        }
+
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                contentDiv.innerHTML = data;
+            });
+    }
+  </script>
+</body>
+</html>
